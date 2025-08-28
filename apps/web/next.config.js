@@ -133,7 +133,9 @@ const moduleExports = {
       'campsite.imgix.net',
       'campsite-dev.imgix.net',
       'lh3.googleusercontent.com',
-      'uploads.linear.app'
+      'uploads.linear.app',
+      'camp-api.polo-apps.com',
+      "hel1.your-objectstorage.com"
     ]
   },
   async redirects() {
