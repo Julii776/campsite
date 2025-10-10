@@ -125,11 +125,16 @@ module MediaUrlBuilder
     Rails.logger.debug "  Original params: #{params.inspect}"
     Rails.logger.debug "  Translated params: #{translated_params.inspect}"
     
-    uri = Addressable::URI.parse(base)
-    uri.path = [uri.path, path].join('/').gsub(%r{/+}, '/')
-    uri.query_values = (uri.query_values || {}).merge(translated_params) if translated_params.present?
-    
-    final_url = uri.to_s
+  uri = Addressable::URI.parse(base)
+
+  # Prefer serving media via the Rails media proxy route so the CDN requests
+  # will hit Rails which can stream the protected S3 object. Construct a URL
+  # like: https://<cdn-host>/media/<path>?<params>
+  media_path = ["/media", path].join('/').gsub(%r{/+}, '/')
+  uri.path = [uri.path, media_path].join('/').gsub(%r{/+}, '/')
+  uri.query_values = (uri.query_values || {}).merge(translated_params) if translated_params.present?
+
+  final_url = uri.to_s
     Rails.logger.debug "[MediaUrlBuilder] Final URL: #{final_url}" if Rails.env.development?
     
     final_url

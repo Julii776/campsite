@@ -111,6 +111,7 @@ Rails.application.configure do
   config.hosts << "camp-admin.polo-apps.com"
   config.hosts << "camp-auth.polo-apps.com"
   config.hosts << "camp-api.polo-apps.com"
+  config.hosts << "camp-cdn.polo-apps.com"  # CDN subdomain for serving media
 
   config.hosts << "camp-admin.truemark.dev"
   config.hosts << "camp-auth.truemark.dev"
