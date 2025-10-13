@@ -49,7 +49,7 @@ module MediaUrlBuilder
     uri.to_s
   end
 
-  def build_imgix__video_url(path, append_params = {})
+  def build_imgix_video_url(path, append_params = {})
     uri = Addressable::URI.parse(Rails.application.credentials.dig(:cloudflare, :video_cdn_url))
     uri.path = "/cdn/#{path}"
     if append_params.present?
