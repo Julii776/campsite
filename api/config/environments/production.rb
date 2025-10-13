@@ -50,27 +50,11 @@ Rails.application.configure do
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   config.force_ssl = true
-  config.action_dispatch.trusted_proxies = [
-    # Trust Cloudflare IPv4 and IPv6 ranges
-    IPAddr.new("173.245.48.0/20"),
-    IPAddr.new("103.21.244.0/22"),
-    IPAddr.new("103.22.200.0/22"),
-    IPAddr.new("103.31.4.0/22"),
-    IPAddr.new("141.101.64.0/18"),
-    IPAddr.new("108.162.192.0/18"),
-    IPAddr.new("190.93.240.0/20"),
-    IPAddr.new("188.114.96.0/20"),
-    IPAddr.new("197.234.240.0/22"),
-    IPAddr.new("198.41.128.0/17"),
-    IPAddr.new("162.158.0.0/15"),
-    IPAddr.new("104.16.0.0/12"),
-    IPAddr.new("172.64.0.0/13"),
-    IPAddr.new("131.0.72.0/22")
-  ]
 
   # Include generic and useful information about system operation, but avoid logging too much
   # information to avoid inadvertent exposure of personally identifiable information (PII).
-  config.log_level = :info
+  # Temporarily set to :debug for detailed logging (change back to :info after debugging)
+  config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "debug").to_sym
 
   # Prepend all log lines with the following tags.
   config.log_tags = [:request_id]
@@ -119,6 +103,9 @@ Rails.application.configure do
     logger.formatter = config.log_formatter
     config.logger    = ActiveSupport::TaggedLogging.new(logger)
   end
+  
+  # Enhanced logging for debugging
+  config.logger.level = Logger::DEBUG if ENV["RAILS_LOG_LEVEL"] == "debug"
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
